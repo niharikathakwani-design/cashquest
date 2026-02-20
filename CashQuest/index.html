@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CashQuest — Your Gamified Finance Dashboard</title>
+    <meta name="description"
+        content="Track spending, crush budgets, and level up your finances. A gamified personal finance dashboard for households.">
+    <meta name="theme-color" content="#0F0F23">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- App Shell -->
+    <div id="app" class="app">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-brand">
+                <span class="brand-icon">💰</span>
+                <h1 class="brand-name">CashQuest</h1>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-page="dashboard" onclick="navigateTo('dashboard')">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Dashboard</span>
+                </a>
+                <a href="#" class="nav-item" data-page="upload" onclick="navigateTo('upload')">
+                    <span class="nav-icon">📤</span>
+                    <span class="nav-label">Upload CSV</span>
+                </a>
+                <a href="#" class="nav-item" data-page="transactions" onclick="navigateTo('transactions')">
+                    <span class="nav-icon">💳</span>
+                    <span class="nav-label">Transactions</span>
+                </a>
+                <a href="#" class="nav-item" data-page="budgets" onclick="navigateTo('budgets')">
+                    <span class="nav-icon">🎯</span>
+                    <span class="nav-label">Budgets</span>
+                </a>
+                <a href="#" class="nav-item" data-page="trends" onclick="navigateTo('trends')">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-label">Trends</span>
+                </a>
+                <a href="#" class="nav-item" data-page="achievements" onclick="navigateTo('achievements')">
+                    <span class="nav-icon">🏆</span>
+                    <span class="nav-label">Achievements</span>
+                </a>
+                <a href="#" class="nav-item" data-page="settings" onclick="navigateTo('settings')">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-label">Settings</span>
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-avatar" id="userAvatar">N</div>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Nia</span>
+                    <span class="user-household">🏠 Thakwani Household</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Mobile Top Bar -->
+        <header class="mobile-topbar">
+            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+            <h1 class="brand-name-mobile">💰 CashQuest</h1>
+            <div class="user-avatar-mobile" id="userAvatarMobile">N</div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- ========== DASHBOARD PAGE ========== -->
+            <section id="page-dashboard" class="page active">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">Welcome back, <span id="greetingName">Nia</span> 👋</h2>
+                        <p class="page-subtitle" id="dashboardDate">February 2026</p>
+                    </div>
+                    <div class="spending-score-mini" id="spendingScoreMini">
+                        <div class="score-ring">
+                            <svg viewBox="0 0 36 36" class="score-svg">
+                                <path class="score-bg"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="score-fill" id="scoreArc" stroke-dasharray="0, 100"
+                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <span class="score-value" id="scoreValue">--</span>
+                        </div>
+                        <span class="score-label">Spending Score</span>
+                    </div>
+                </div>
+
+                <!-- Hero Cards -->
+                <div class="hero-cards">
+                    <div class="hero-card income-card">
+                        <div class="hero-card-icon">💚</div>
+                        <div class="hero-card-content">
+                            <span class="hero-card-label">Total Income</span>
+                            <span class="hero-card-value" id="totalIncome">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="hero-card expense-card">
+                        <div class="hero-card-icon">🔴</div>
+                        <div class="hero-card-content">
+                            <span class="hero-card-label">Total Expenses</span>
+                            <span class="hero-card-value" id="totalExpenses">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="hero-card balance-card">
+                        <div class="hero-card-icon">⚖️</div>
+                        <div class="hero-card-content">
+                            <span class="hero-card-label">Net Balance</span>
+                            <span class="hero-card-value" id="netBalance">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="hero-card savings-card">
+                        <div class="hero-card-icon">🎯</div>
+                        <div class="hero-card-content">
+                            <span class="hero-card-label">Savings Rate</span>
+                            <span class="hero-card-value" id="savingsRate">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-row">
+                    <div class="chart-card">
+                        <h3 class="chart-title">Category Breakdown</h3>
+                        <canvas id="categoryDonut" width="300" height="300"></canvas>
+                        <div id="categoryLegend" class="chart-legend"></div>
+                    </div>
+                    <div class="chart-card">
+                        <h3 class="chart-title">Income vs Expenses</h3>
+                        <canvas id="incomeExpenseBar" width="400" height="300"></canvas>
+                    </div>
+                </div>
+
+                <!-- Alerts & Recommendations Row -->
+                <div class="alerts-row">
+                    <div class="alerts-section">
+                        <div class="section-header">
+                            <h3 class="section-title">⚠️ Anomaly Alerts</h3>
+                            <button class="btn btn-sm btn-secondary" onclick="showAddAlertModal()">+ Add Alert</button>
+                        </div>
+                        <div id="anomalyAlerts" class="alerts-list">
+                            <div class="empty-state">No anomalies detected. Upload a CSV to get started!</div>
+                        </div>
+                    </div>
+                    <div class="recommendations-section">
+                        <h3 class="section-title">💡 Recommendations</h3>
+                        <div id="recommendations" class="recommendations-list">
+                            <div class="empty-state">Upload your first CSV to get personalized tips!</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Active Challenge -->
+                <div class="challenge-card" id="challengeCard" style="display:none;">
+                    <div class="challenge-header">
+                        <span class="challenge-icon">⚔️</span>
+                        <h3 class="challenge-title" id="challengeTitle">Monthly Challenge</h3>
+                    </div>
+                    <div class="challenge-progress">
+                        <div class="challenge-bar">
+                            <div class="challenge-fill" id="challengeFill" style="width: 0%"></div>
+                        </div>
+                        <span class="challenge-pct" id="challengePct">0%</span>
+                    </div>
+                    <p class="challenge-desc" id="challengeDesc"></p>
+                </div>
+            </section>
+
+            <!-- ========== UPLOAD PAGE ========== -->
+            <section id="page-upload" class="page">
+                <div class="page-header">
+                    <h2 class="page-title">📤 Upload CSV</h2>
+                    <p class="page-subtitle">Import your bank transactions</p>
+                </div>
+                <div class="upload-zone" id="uploadZone">
+                    <div class="upload-icon">📁</div>
+                    <h3>Drag & drop your CSV file here</h3>
+                    <p>or click to browse</p>
+                    <input type="file" id="csvFileInput" accept=".csv" style="display:none">
+                    <button class="btn btn-primary" onclick="document.getElementById('csvFileInput').click()">Choose
+                        File</button>
+                </div>
+                <div id="uploadPreview" class="upload-preview" style="display:none;">
+                    <h3 class="preview-title">Preview <span id="previewCount"></span></h3>
+                    <div class="preview-table-wrap">
+                        <table class="preview-table" id="previewTable">
+                            <thead id="previewHead"></thead>
+                            <tbody id="previewBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="preview-actions">
+                        <button class="btn btn-secondary" onclick="cancelUpload()">Cancel</button>
+                        <button class="btn btn-primary btn-glow" onclick="confirmUpload()">✅ Import
+                            Transactions</button>
+                    </div>
+                </div>
+                <div id="uploadHistory" class="upload-history">
+                    <h3 class="section-title">📜 Upload History</h3>
+                    <div id="uploadHistoryList" class="upload-history-list">
+                        <div class="empty-state">No uploads yet.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== TRANSACTIONS PAGE ========== -->
+            <section id="page-transactions" class="page">
+                <div class="page-header">
+                    <div>
+                        <h2 class="page-title">💳 Transactions</h2>
+                        <p class="page-subtitle">All your financial activity</p>
+                    </div>
+                    <button class="btn btn-primary" onclick="showAddTransactionModal()">+ Add Transaction</button>
+                </div>
+                <div class="filters-bar">
+                    <select id="filterCategory" class="filter-select" onchange="renderTransactions()">
+                        <option value="">All Categories</option>
+                    </select>
+                    <select id="filterType" class="filter-select" onchange="renderTransactions()">
+                        <option value="">All Types</option>
+                        <option value="expense">Expenses</option>
+                        <option value="income">Income</option>
+                    </select>
+                    <input type="month" id="filterMonth" class="filter-input" onchange="renderTransactions()">
+                    <input type="text" id="filterSearch" class="filter-input" placeholder="Search..."
+                        oninput="renderTransactions()">
+                </div>
+                <div class="transactions-table-wrap">
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th class="text-right">Amount</th>
+                                <th>Merchant</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionsBody">
+                            <tr>
+                                <td colspan="6" class="empty-state">No transactions yet. Upload a CSV to get started.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination" id="txPagination"></div>
+            </section>
+
+            <!-- ========== BUDGETS PAGE ========== -->
+            <section id="page-budgets" class="page">
+                <div class="page-header">
+                    <h2 class="page-title">🎯 Budgets</h2>
+                    <p class="page-subtitle">Set and track your monthly spending limits</p>
+                </div>
+                <div class="budget-setup">
+                    <div class="budget-add">
+                        <select id="budgetCategory" class="filter-select">
+                            <option value="">Select Category</option>
+                        </select>
+                        <input type="number" id="budgetAmount" class="filter-input" placeholder="Monthly limit ($)">
+                        <button class="btn btn-primary" onclick="addBudget()">+ Add Budget</button>
+                    </div>
+                </div>
+                <div id="budgetsList" class="budgets-list">
+                    <div class="empty-state">No budgets set. Add a category budget above!</div>
+                </div>
+            </section>
+
+            <!-- ========== TRENDS PAGE ========== -->
+            <section id="page-trends" class="page">
+                <div class="page-header">
+                    <h2 class="page-title">📈 Trends</h2>
+                    <p class="page-subtitle">How your spending changes over time</p>
+                </div>
+                <div class="chart-card full-width">
+                    <h3 class="chart-title">Monthly Spending Trend</h3>
+                    <canvas id="trendLineChart" width="800" height="350"></canvas>
+                </div>
+                <div class="chart-card full-width">
+                    <h3 class="chart-title">Category Comparison by Month</h3>
+                    <canvas id="categoryTrendChart" width="800" height="350"></canvas>
+                </div>
+            </section>
+
+            <!-- ========== ACHIEVEMENTS PAGE ========== -->
+            <section id="page-achievements" class="page">
+                <div class="page-header">
+                    <h2 class="page-title">🏆 Achievements</h2>
+                    <p class="page-subtitle">Track your financial wins!</p>
+                </div>
+                <div class="score-section">
+                    <div class="spending-score-large">
+                        <svg viewBox="0 0 36 36" class="score-svg-large">
+                            <path class="score-bg"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            <path class="score-fill" id="scoreArcLarge" stroke-dasharray="0, 100"
+                                d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                        </svg>
+                        <div class="score-center">
+                            <span class="score-value-large" id="scoreValueLarge">--</span>
+                            <span class="score-tier" id="scoreTier">Upload data to see score</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="streaks-section">
+                    <h3 class="section-title">🔥 Streaks</h3>
+                    <div id="streaksList" class="streaks-list">
+                        <div class="streak-card">
+                            <span class="streak-icon">🔥</span>
+                            <span class="streak-count" id="underBudgetStreak">0</span>
+                            <span class="streak-label">Days Under Budget</span>
+                        </div>
+                        <div class="streak-card">
+                            <span class="streak-icon">📤</span>
+                            <span class="streak-count" id="uploadStreak">0</span>
+                            <span class="streak-label">CSV Uploads</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="badges-section">
+                    <h3 class="section-title">🏅 Badges</h3>
+                    <div id="badgesList" class="badges-grid">
+                        <!-- Badges render here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========== SETTINGS PAGE ========== -->
+            <section id="page-settings" class="page">
+                <div class="page-header">
+                    <h2 class="page-title">⚙️ Settings</h2>
+                    <p class="page-subtitle">Customize your CashQuest experience</p>
+                </div>
+                <div class="settings-group">
+                    <h3 class="settings-title">👤 Profile</h3>
+                    <div class="setting-row">
+                        <label>Your Name</label>
+                        <input type="text" id="settingsName" class="filter-input" placeholder="Your name"
+                            onchange="saveSetting('userName', this.value)">
+                    </div>
+                    <div class="setting-row">
+                        <label>Partner's Name</label>
+                        <input type="text" id="settingsPartner" class="filter-input" placeholder="Partner's name"
+                            onchange="saveSetting('partnerName', this.value)">
+                    </div>
+                    <div class="setting-row">
+                        <label>Household Name</label>
+                        <input type="text" id="settingsHousehold" class="filter-input" placeholder="Household name"
+                            onchange="saveSetting('householdName', this.value)">
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h3 class="settings-title">💰 Currency</h3>
+                    <div class="setting-row">
+                        <label>Currency Symbol</label>
+                        <select id="settingsCurrency" class="filter-select"
+                            onchange="saveSetting('currency', this.value)">
+                            <option value="$">$ CAD / USD</option>
+                            <option value="€">€ EUR</option>
+                            <option value="£">£ GBP</option>
+                            <option value="₹">₹ INR</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h3 class="settings-title">🎨 Theme Colors</h3>
+                    <div class="setting-row">
+                        <label>Primary Color (Accent)</label>
+                        <input type="color" id="settingsColorPrimary" class="color-picker" value="#00D09C"
+                            onchange="saveThemeColor('primary', this.value)">
+                    </div>
+                    <div class="setting-row">
+                        <label>Secondary Color (Gamification)</label>
+                        <input type="color" id="settingsColorSecondary" class="color-picker" value="#6C5CE7"
+                            onchange="saveThemeColor('secondary', this.value)">
+                    </div>
+                    <div class="setting-row">
+                        <label>Background Color</label>
+                        <input type="color" id="settingsColorBg" class="color-picker" value="#0F0F23"
+                            onchange="saveThemeColor('bg', this.value)">
+                    </div>
+                    <div class="setting-row">
+                        <label>Card / Surface Color</label>
+                        <input type="color" id="settingsColorSurface" class="color-picker" value="#1A1A2E"
+                            onchange="saveThemeColor('surface', this.value)">
+                    </div>
+                    <div class="setting-row">
+                        <label>Reset to defaults</label>
+                        <button class="btn btn-secondary" onclick="resetThemeColors()">🔄 Reset Colors</button>
+                    </div>
+                </div>
+                <div class="settings-group">
+                    <h3 class="settings-title">🗑️ Data Management</h3>
+                    <div class="setting-row">
+                        <label>Clear all transaction data</label>
+                        <button class="btn btn-danger" onclick="clearAllData()">Reset All Data</button>
+                    </div>
+                    <div class="setting-row">
+                        <label>Export transactions as CSV</label>
+                        <button class="btn btn-secondary" onclick="exportCSV()">📥 Export CSV</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Modal Overlay -->
+    <div id="modalOverlay" class="modal-overlay" onclick="closeModal()">
+        <div class="modal" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="modalTitle">Modal</h3>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer" id="modalFooter"></div>
+        </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+    <script src="dashboard.js"></script>
+    <script src="features.js"></script>
+    <script src="enhancements.js"></script>
+</body>
+
+</html>
